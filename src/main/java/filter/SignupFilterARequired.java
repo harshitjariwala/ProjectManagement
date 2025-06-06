@@ -27,22 +27,22 @@ public class SignupFilterARequired implements Filter{
 		
 		boolean isError = false;
 		
-		if(firstName.isBlank() || firstName.isEmpty()) {
+		if(firstName == null || firstName.isBlank()) {
 			request.setAttribute("firstNameError","First Name is Required");
 			isError = true;
 		}
 		
-		if(email.isBlank() || email.isEmpty()) {
+		if(email == null || email.isBlank()) {
 			request.setAttribute("emailError","Email Id is Required");
 			isError = true;
 		}
 		
-		if(password.isBlank() || password.isEmpty()) {
+		if(password == null || password.isBlank()) {
 			request.setAttribute("passwordError", "Password is Required");
 			isError = true;
 		}
 		
-		if(confirmPassword.isBlank() || confirmPassword.isEmpty()) {
+		if(confirmPassword == null || confirmPassword.isBlank()) {
 			request.setAttribute("confirmPasswordError","Confirm Password is Required");
 			isError = true;
 		}

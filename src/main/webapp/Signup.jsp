@@ -12,6 +12,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     body.light-theme {
@@ -24,15 +25,18 @@
       color: #f1f1f1;
     }
 
-    .main-header {
-      height: 60px;
-      background-color: #243447;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-    }
+.main-header {
+  height: 60px;
+  min-height: 60px;
+  max-height: 60px;
+  flex-shrink: 0;
+  background-color: #243447;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  }
 
     .toggle-sidebar-btn {
       font-size: 26px;
@@ -42,27 +46,32 @@
       color: white;
     }
 
-    .signup-container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+.signup-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
 
-    .signup-card {
-      width: 100%;
-      max-width: 500px;
-      background-color: inherit;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+.signup-card {
+  width: 100%;
+  max-width: 500px;
+  background-color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-height: 100%;
+  overflow-y: auto;
+}
 
     .form-label {
-      font-weight: 500;
-    }
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
 
     body.dark-theme .form-control {
       background-color: #1c1c1c;
@@ -103,6 +112,25 @@ body.light-theme .form-select {
   color: #212529;
   border: 1px solid #ced4da;
 }
+
+.error-message {
+  color: #dc3545; /* Bootstrap's danger color */
+  font-size: 0.8rem;
+  margin-top: 2px;
+  display: block;
+}
+footer {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  background-color: #243447;
+  color: white;
+  text-align: center;
+}
+.form-control,
+.form-select {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
     
   </style>
 </head>
@@ -135,40 +163,46 @@ body.light-theme .form-select {
     <div class="signup-card">
       <h3 class="text-center mb-4">Create an Account</h3>
       <form action="SignupController" method="post">
-        <div class="mb-3">
-          <label for="firstName" class="form-label">First Name</label>
-          <input type="text" class="form-control" name="firstName" value="${firstName}">${firstNameError}
-        </div>
-        <div class="mb-3">
-          <label for="lastName" class="form-label">Last Name</label>
-          <input type="text" class="form-control" name="lastName" value="${lastName}">${lastNameError}
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email Address</label>
-          <input type="text" class="form-control" name="email" value="${email}">${emailError}
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" name="password" value="${password}">${passwordError}
-        </div>
-        <div class="mb-3">
-          <label for="confirmPassword" class="form-label">Confirm Password</label>
-          <input type="password" class="form-control" name="confirmPassword" value="${confirmPassword}">${confirmPasswordError}
-        </div>
-        <div class="mb-3">
-  		  <label for="role" class="form-label">Role</label>
-  		  <select class="form-select" name="role">
-    		<option value="admin" ${role.equals("admin")?"selected":""}>Admin</option>
-    		<option value="user" ${role.equals("user")?"selected":""}>User</option>
-  		  </select>
-		</div>
-        <div class="d-grid">
-         	<button type="submit" class="btn btn-primary">Sign Up</button>
-        </div>
-        <div class="text-center mt-3">
-          	<small>Already have an account? <a href="login.jsp">Login here</a></small>
-        </div>
-      </form>
+  <div class="mb-3">
+    <label for="firstName" class="form-label">First Name</label>
+    <input type="text" class="form-control" name="firstName" value="${firstName}">
+    <span class="error-message">${firstNameError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="lastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" name="lastName" value="${lastName}">
+    <span class="error-message">${lastNameError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email Address</label>
+    <input type="text" class="form-control" name="email" value="${email}">
+    <span class="error-message">${emailError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" name="password" value="${password}">
+    <span class="error-message">${passwordError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="confirmPassword" class="form-label">Confirm Password</label>
+    <input type="password" class="form-control" name="confirmPassword" value="${confirmPassword}">
+    <span class="error-message">${confirmPasswordError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="role" class="form-label">Role</label>
+    <select class="form-select" name="role">
+      <option value="admin" ${role.equals("admin") ? "selected" : ""}>Admin</option>
+      <option value="user" ${role.equals("user") ? "selected" : ""}>User</option>
+    </select>
+  </div>
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+  </div>
+  <div class="text-center mt-3">
+    <small>Already have an account? <a href="Login.jsp">Login here</a></small>
+  </div>
+</form>
+
     </div>
   </div>
 
@@ -179,12 +213,13 @@ body.light-theme .form-select {
 
   <!-- JavaScript -->
   <script>
-    const themeSwitch = document.getElementById('themeSwitch');
-    themeSwitch.addEventListener('change', function () {
-      const isDark = this.checked;
-      document.body.classList.toggle('dark-theme', isDark);
-      document.body.classList.toggle('light-theme', !isDark);
-    });
+  const themeSwitch = document.getElementById('themeSwitch');
+  themeSwitch.addEventListener('change', function () {
+    const isDark = this.checked;
+    document.body.classList.toggle('dark-theme', isDark);
+    document.body.classList.toggle('light-theme', !isDark);
+  });
+ 
   </script>
 
 </body>

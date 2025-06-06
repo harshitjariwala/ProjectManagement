@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored = "false"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,6 +103,13 @@ body.light-theme .form-select {
   color: #212529;
   border: 1px solid #ced4da;
 }
+.error-message {
+  color: #dc3545; /* Bootstrap's danger color */
+  font-size: 0.9rem;
+  margin-top: 4px;
+  display: block;
+}
+
     
   </style>
 </head>
@@ -135,21 +142,34 @@ body.light-theme .form-select {
     <div class="signup-card">
       <h3 class="text-center mb-4">Login</h3>
       <form action="LoginController" method="post">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email Address</label>
-          <input type="text" class="form-control" name="email">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" name="password">
-        </div>
-        <div class="d-grid">
-         	<button type="submit" class="btn btn-primary">Login</button>
-        </div>
-        <div class="text-center mt-3">
-          	<small>Do not have an account? <a href="Signup.jsp">Signup here</a></small>
-        </div>
-      </form>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email Address</label>
+    <input type="text" class="form-control" name="email" value="${email}" id="loginEmail">
+    <span class="error-message">${emailError}</span>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" name="password" value="${password}">
+    <span class="error-message">${passwordError}</span>
+  </div>
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </div>
+  <div class="text-center mt-3">
+    <small>Do not have an account? <a href="Signup.jsp">Signup here</a></small>
+  </div>
+  <!-- <div class="text-center mt-2">
+    <a href="ForgetPasswordController" class="text-decoration-none">Forgot Password?</a>
+  </div> -->
+</form>
+
+<form action="ForgetPasswordController" method="post" id="forgotForm">
+  <input type="hidden" name="email" id="forgotEmail" />
+  <div class="text-center mt-3">
+    <button type="submit" class="btn btn-link p-0" style="text-decoration: none;">Forgot Password?</button>
+  </div>
+</form>
+
     </div>
   </div>
 
@@ -166,6 +186,15 @@ body.light-theme .form-select {
       document.body.classList.toggle('dark-theme', isDark);
       document.body.classList.toggle('light-theme', !isDark);
     });
+    
+    document.getElementById("forgotForm").addEventListener("submit", function (e) {
+    	  const emailInput = document.getElementById("loginEmail"); // From login form
+    	  const forgotEmail = document.getElementById("forgotEmail"); // In forgot form
+
+    	  forgotEmail.value = emailInput.value.trim(); // Copy value from login form
+    	  
+    	});
+
   </script>
 
 </body>
