@@ -213,13 +213,21 @@ footer {
 
   <!-- JavaScript -->
   <script>
-  const themeSwitch = document.getElementById('themeSwitch');
-  themeSwitch.addEventListener('change', function () {
+  // Apply saved theme on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    document.body.classList.toggle('dark-theme', isDark);
+    document.body.classList.toggle('light-theme', !isDark);
+    document.getElementById('themeSwitch').checked = isDark;
+  });
+
+  // Save theme when toggled
+  document.getElementById('themeSwitch').addEventListener('change', function () {
     const isDark = this.checked;
     document.body.classList.toggle('dark-theme', isDark);
     document.body.classList.toggle('light-theme', !isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
- 
   </script>
 
 </body>

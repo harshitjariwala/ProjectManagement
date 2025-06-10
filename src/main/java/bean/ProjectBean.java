@@ -5,6 +5,7 @@ public class ProjectBean {
 	String title;
 	String description;
 	String active;
+	
 	public int getProjectId() {
 		return projectId;
 	}

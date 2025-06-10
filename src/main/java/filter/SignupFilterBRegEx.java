@@ -35,7 +35,7 @@ public class SignupFilterBRegEx implements Filter{
 			isError = true;
 		}
 		
-		if(lastName.matches(alphaRegex) == false) {
+		if(lastName.matches(alphaRegex) == false && lastName != null && lastName.isBlank() != true) {
 			request.setAttribute("lastNameError","Enter valid Last Name");
 			isError = true;
 		}

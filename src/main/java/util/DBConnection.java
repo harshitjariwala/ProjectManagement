@@ -8,14 +8,14 @@ public class DBConnection {
 		String DRIVERNAME = "oracle.jdbc.driver.OracleDriver";
 		String URL = "jdbc:oracle:thin:@localhost:1521:XE";
 		String USERNAME = "SCOTT";
-		String PASSWORD = "TIGER";
+		String PASSWORD = "TIGER";//
 		
 		try {
 			Class.forName(DRIVERNAME);
 			Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			return conn;
 		} catch (Exception e) {
-		
+			e.printStackTrace();
 		}
 		return null;
 	}

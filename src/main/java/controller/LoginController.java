@@ -32,7 +32,12 @@ public class LoginController extends HttpServlet{
 		else {
 			HttpSession session = request.getSession();
 			session.setAttribute("user",user);
-			response.sendRedirect("AdminIndex.jsp");
+			if(user.getRole().equals("admin")) {
+				response.sendRedirect("AdminIndexController");
+			}			
+			else {
+				response.sendRedirect("UserIndex.jsp");
+			}
 		}
 	}
 }

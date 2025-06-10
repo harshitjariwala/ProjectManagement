@@ -182,6 +182,8 @@
       background-color: #243447;
       color: white;
       text-align: center;
+      margin-top: auto;
+  width: 100%;
     }
 
     body.light-theme footer {
@@ -206,10 +208,24 @@
       opacity: 1;
       visibility: visible;
     }
+    
+    form-wrapper {
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 20px;
+   background-color: inherit;
+   border-radius: 10px;
+ }
+
+ @media (max-width: 768px) {
+   .main-content.shifted {
+     margin-left: 0;
+   }
+ }
   </style>
 </head>
 <body class="light-theme">
-
+<div class="page-wrapper d-flex flex-column">
 <div class="main-header">
   <div class="d-flex align-items-center gap-3">
     <button class="toggle-sidebar-btn" id="toggleSidebarBtn">&#9776;</button>
@@ -244,78 +260,48 @@
 
 <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-<div class="page-wrapper">
-  <div class="main-content" id="mainContent">
-    <h2>Projects & Tasks</h2>
-    <c:if test="${joinList.size() > 0}">
-    <c:forEach var="i" begin="0" end="${joinList.size() - 1}" step = "1">
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="ListProjectController" class="project-title-link text-primary">📁 ${projectList[i].title}</a>
-        </h5>
-        
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover table-sm">
-            <thead class="table-primary">
-              <tr>
-                <th>Task ID</th>
-                <th>Task Detail</th>
-                <th>Assigned By</th>
-                <th>Assigned To</th>
-                <th>Remarks</th>
-                <th>Status</th>
-                <th>Assign Date</th>
-                <th>Completion Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            
-            <tbody>
-            <c:if test="${joinList[i].size() > 0}">
-            <c:forEach var="j" begin="0" end="${joinList[i].size() >=2 ? 2:joinList[i].size() - 1}" step = "1">
-              <tr>
-                <td>${joinList[i][j].taskId}</td>
-                <td>${joinList[i][j].taskDetail}</td>
-                <td>${joinList[i][j].assignedByFirstName} ${joinList[i][j].assignedByLastName}</td>
-                <td>${joinList[i][j].assignedToFirstName} ${joinList[i][j].assignedToLastName}</td>
-                <td>${joinList[i][j].remarks}</td>
-                <td><span class="badge bg-warning text-dark">${joinList[i][j].status}</span></td>
-                <td>${joinList[i][j].assignedDate}</td>
-                <td>${joinList[i][j].completionDate}</td>
-                <td class="text-center">
-                  <a class="btn-action btn-view"><i class="bi bi-eye-fill"></i> View</a>
-                  <a class="btn-action btn-update"><i class="bi bi-pencil-square"></i> Update</a>
-                  <a class="btn-action btn-delete"><i class="bi bi-trash-fill"></i> Delete</a>
-                </td>
-              </tr>
-              </c:forEach>
-              </c:if>
-            </tbody>
-          </table>
-        </div>
-        
-        <c:if test="${empty joinList[i]}">
-        <p class="text-muted">No tasks available for this project.</p>
-        <a href="NewTaskAController1" class="btn btn-outline-light">📝 New Task</a>
-        </c:if>
-      </div>
-    </div> 
-    </c:forEach>
-    </c:if> 
-    <c:if test="${empty joinList}">
-    <div class="alert alert-info mt-4">
-      <h5>No active projects found.</h5>
-      <p>Please add a new project to start managing tasks.</p>
-      <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
-    </div>
-  </c:if>
-  </div>
+<!-- Main Content -->
+<!-- With this updated block -->
+<div class="main-content" id="mainContent">
+  <div class="container">
+    <div class="form-wrapper">
+      <form action="NewTaskBController" method="post">
+        <label class="form-label">Choose Project:</label>
+        <select name="projectId" class="form-select mb-3">
+          <c:forEach var="project" items="${projectList}">
+            <option value="${project.projectId}">${project.title}</option>
+          </c:forEach>
+        </select>
 
+        <label class="form-label">Task Detail:</label>
+        <input type="text" name="taskDetail" class="form-control mb-3">
+
+        <label class="form-label">Assign By:</label>
+        <select name="assignedBy" class="form-select mb-3">
+          <c:forEach var="user" items="${userList}">
+            <option value="${user.userId}">${user.firstName} ${user.lastName}</option>
+          </c:forEach>
+        </select>
+
+        <label class="form-label">Assign To:</label>
+        <select name="assignedTo" class="form-select mb-3">
+          <c:forEach var="user" items="${userList}">
+            <option value="${user.userId}">${user.firstName} ${user.lastName}</option>
+          </c:forEach>
+        </select>
+
+        <label class="form-label">Remarks:</label>
+        <input type="text" name="remarks" class="form-control mb-3">
+
+        <button type="submit" class="btn btn-primary mt-2">Add Task</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
   <footer>
     &copy; 2025 Task Manager. All rights reserved.
   </footer>
-</div>
 
 <script>
   const sidebar = document.getElementById('taskManagerSidebar');

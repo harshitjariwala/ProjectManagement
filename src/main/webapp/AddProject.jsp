@@ -1,14 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored = "false"%>
-<%@page import="bean.TaskBean"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Task Manager Dashboard</title>
+  <title>Add New Project</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     html, body {
       height: 100%;
@@ -57,6 +55,8 @@
     }
 
     .toggle-sidebar-btn {
+      position: relative;
+      left: 18px;
       font-size: 26px;
       background: none;
       border: none;
@@ -86,8 +86,7 @@
       transform: translateX(0);
     }
 
-    .sidebar a,
-    .sidebar button {
+    .sidebar button, .sidebar a {
       margin-bottom: 10px;
       width: 100%;
       text-align: left;
@@ -109,84 +108,46 @@
       padding: 20px;
       margin-left: 0;
       transition: margin-left 0.3s ease-in-out;
+      flex: 1;
     }
 
     .main-content.shifted {
       margin-left: 250px;
     }
 
-    .card {
-      background-color: inherit;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    @media (max-width: 768px) {
+      .main-content.shifted {
+        margin-left: 0;
+      }
     }
 
-    .table th, .table td {
-      vertical-align: middle;
-    }
-
-    .table-responsive {
-      margin-top: 10px;
-    }
-
-    body.dark-theme .table {
-      background-color: #1e1e1e;
-      color: #eaeaea;
-      border-color: #444;
-    }
-
-    body.dark-theme .table th,
-    body.dark-theme .table td {
-      background-color: #1e1e1e;
-      color: #eaeaea;
-      border-color: #444;
-    }
-
-    body.dark-theme .table-primary {
-      background-color: #2b4c73 !important;
-      color: #ffffff;
-    }
-
-    .btn-action {
-      font-size: 14px;
-      padding: 4px 8px;
-    }
-
-    .btn-view {
-      color: #0d6efd;
-    }
-
-    .btn-update {
-      color: #198754;
-    }
-
-    .btn-delete {
-      color: #dc3545;
-    }
-
-    .btn-action:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .project-title-link {
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .project-title-link:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      padding: 10px 20px;
-      background-color: #243447;
-      color: white;
-      text-align: center;
-    }
-
-    body.light-theme footer {
-      background-color: #e9ecef;
+    body.light-theme .card-title {
       color: #212529;
+    }
+
+    body.dark-theme .card-title {
+      color: #f1f1f1;
+    }
+
+    .user-info img {
+      border-radius: 50%;
+    }
+
+    @media (max-width: 768px) {
+      .user-info span {
+        display: none;
+      }
+    }
+
+    .main-header.shifted {
+      margin-left: 250px;
+      transition: margin-left 0.3s ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+      .main-header.shifted {
+        margin-left: 0;
+      }
     }
 
     .sidebar-overlay {
@@ -206,10 +167,41 @@
       opacity: 1;
       visibility: visible;
     }
+
+    footer {
+      padding: 10px 20px;
+      background-color: #243447;
+      color: white;
+      text-align: center;
+    }
+
+    body.light-theme footer {
+      background-color: #e9ecef;
+      color: #212529;
+    }
+
+    body.dark-theme footer {
+      background-color: #1a1a1a;
+      color: #f1f1f1;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 30px;
+    }
+    
+    .error-message {
+  color: #dc3545; /* Bootstrap's danger color */
+  font-size: 0.8rem;
+  margin-top: 2px;
+  display: block;
+}
   </style>
 </head>
 <body class="light-theme">
 
+<!-- Header -->
 <div class="main-header">
   <div class="d-flex align-items-center gap-3">
     <button class="toggle-sidebar-btn" id="toggleSidebarBtn">&#9776;</button>
@@ -227,96 +219,52 @@
   </div>
 </div>
 
+<!-- Sidebar -->
 <div class="sidebar" id="taskManagerSidebar">
   <h5 class="mb-4">Task Manager</h5>
   <div>
-    <a class="btn btn-outline-light">🏠 Home</a>
-    <a href="Signup.jsp" class="btn btn-outline-light">➕ Add User</a>
-    <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
-    <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
-    <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <button class="btn btn-outline-light">📊 Reports</button>
+    <a href="AdminIndexController" class="btn btn-outline-light mb-2">🏠 Home</a>
+    <a href="Signup.jsp" class="btn btn-outline-light mb-2">➕ Add User</a>
+    <a href="ListUserController" class="btn btn-outline-light mb-2">📋 List Users</a>
+    <a class="btn btn-outline-light mb-2">📁 Add Project</a>
+    <button class="btn btn-outline-light mb-2">📝 New Task</button>
+    <button class="btn btn-outline-light mb-2">📊 Reports</button>
   </div>
   <div class="mt-auto">
     <button class="btn btn-outline-light">🚪 Logout</button>
   </div>
 </div>
 
+<!-- Sidebar Overlay -->
 <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+<!-- Main Content -->
 <div class="page-wrapper">
   <div class="main-content" id="mainContent">
-    <h2>Projects & Tasks</h2>
-    <c:if test="${joinList.size() > 0}">
-    <c:forEach var="i" begin="0" end="${joinList.size() - 1}" step = "1">
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="ListProjectController" class="project-title-link text-primary">📁 ${projectList[i].title}</a>
-        </h5>
-        
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover table-sm">
-            <thead class="table-primary">
-              <tr>
-                <th>Task ID</th>
-                <th>Task Detail</th>
-                <th>Assigned By</th>
-                <th>Assigned To</th>
-                <th>Remarks</th>
-                <th>Status</th>
-                <th>Assign Date</th>
-                <th>Completion Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            
-            <tbody>
-            <c:if test="${joinList[i].size() > 0}">
-            <c:forEach var="j" begin="0" end="${joinList[i].size() >=2 ? 2:joinList[i].size() - 1}" step = "1">
-              <tr>
-                <td>${joinList[i][j].taskId}</td>
-                <td>${joinList[i][j].taskDetail}</td>
-                <td>${joinList[i][j].assignedByFirstName} ${joinList[i][j].assignedByLastName}</td>
-                <td>${joinList[i][j].assignedToFirstName} ${joinList[i][j].assignedToLastName}</td>
-                <td>${joinList[i][j].remarks}</td>
-                <td><span class="badge bg-warning text-dark">${joinList[i][j].status}</span></td>
-                <td>${joinList[i][j].assignedDate}</td>
-                <td>${joinList[i][j].completionDate}</td>
-                <td class="text-center">
-                  <a class="btn-action btn-view"><i class="bi bi-eye-fill"></i> View</a>
-                  <a class="btn-action btn-update"><i class="bi bi-pencil-square"></i> Update</a>
-                  <a class="btn-action btn-delete"><i class="bi bi-trash-fill"></i> Delete</a>
-                </td>
-              </tr>
-              </c:forEach>
-              </c:if>
-            </tbody>
-          </table>
+    <h2>Add New Project</h2>
+    <div class="form-container">
+      <form action="AddProjectController" method="post">
+        <div class="mb-3">
+          <label for="projectTitle" class="form-label">Project Title</label>
+          <input type="text" class="form-control" id="projectTitle" name="title" value="${title}">
+          <span class="error-message">${titleError}</span>
         </div>
-        
-        <c:if test="${empty joinList[i]}">
-        <p class="text-muted">No tasks available for this project.</p>
-        <a href="NewTaskAController1" class="btn btn-outline-light">📝 New Task</a>
-        </c:if>
-      </div>
-    </div> 
-    </c:forEach>
-    </c:if> 
-    <c:if test="${empty joinList}">
-    <div class="alert alert-info mt-4">
-      <h5>No active projects found.</h5>
-      <p>Please add a new project to start managing tasks.</p>
-      <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
+        <div class="mb-3">
+          <label for="projectDescription" class="form-label">Project Description</label>
+          <textarea class="form-control" id="projectDescription" name="description" rows="4">${description}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Project</button>
+      </form>
     </div>
-  </c:if>
   </div>
 
+  <!-- Footer -->
   <footer>
     &copy; 2025 Task Manager. All rights reserved.
   </footer>
 </div>
 
+<!-- JavaScript -->
 <script>
   const sidebar = document.getElementById('taskManagerSidebar');
   const mainContent = document.getElementById('mainContent');

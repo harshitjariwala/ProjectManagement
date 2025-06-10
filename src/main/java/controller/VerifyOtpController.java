@@ -12,7 +12,7 @@ public class VerifyOtpController extends HttpServlet {
             throws ServletException, IOException {
 
         // Get OTP entered by user
-        String enteredOtp = request.getParameter("otp");
+        String otp = request.getParameter("otp");
 
         // Get the original OTP stored in session
         HttpSession session = request.getSession();
@@ -20,15 +20,14 @@ public class VerifyOtpController extends HttpServlet {
 
 
         // Compare entered OTP with the one in session
-        if (enteredOtp != null && enteredOtp.equals(sessionOtp)) {
+        if (otp != null && otp.equals(sessionOtp)) {
             // OTP is correct
             session.removeAttribute("otp"); // remove OTP after successful validation
-            request.setAttribute("success", "Email verified successfully!");
-            request.getRequestDispatcher("AdminIndex.jsp").forward(request, response);
+            request.getRequestDispatcher("NewPassword.jsp").forward(request, response);
         } else {
             // OTP is incorrect
             request.setAttribute("error", "Invalid OTP. Please try again.");
-            request.getRequestDispatcher("otp.jsp").forward(request, response);
+            request.getRequestDispatcher("VerifyOtp.jsp").forward(request, response);
         }
     }
 }
