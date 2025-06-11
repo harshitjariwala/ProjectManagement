@@ -16,8 +16,8 @@ import bean.UserBean;
 import dao.ProjectDao;
 import dao.UserDao;
 
-@WebFilter("/NewTaskBController")
-public class NewTaskBFilterARequired implements Filter{
+@WebFilter("/UpdateTaskBController")
+public class UpdateTaskBFilterARequired implements Filter{
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 	
@@ -25,7 +25,7 @@ public class NewTaskBFilterARequired implements Filter{
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		String taskDetail = request.getParameter("taskDetail");
+String taskDetail = request.getParameter("taskDetail");
 		
 		if(taskDetail == null || taskDetail.isBlank()) {
 			ProjectDao projectDao = new ProjectDao();
@@ -34,6 +34,7 @@ public class NewTaskBFilterARequired implements Filter{
 			UserDao userDao = new UserDao();
 			ArrayList<UserBean> userList = userDao.listUser();
 			
+			request.setAttribute("taskId", request.getParameter("taskId"));
 			request.setAttribute("userList",userList);
 			request.setAttribute("projectList", projectList);
 			request.setAttribute("taskDetailError","Task Details is Required");
@@ -41,7 +42,10 @@ public class NewTaskBFilterARequired implements Filter{
 			request.setAttribute("assignedBy", request.getParameter("assignedBy"));
 			request.setAttribute("assignedTo",request.getParameter("assignedTo"));
 			request.setAttribute("remarks",request.getParameter("remarks"));
-			request.getRequestDispatcher("NewTask.jsp").forward(request, response);
+			request.setAttribute("status", request.getParameter("status"));
+			request.setAttribute("assignedDate",request.getParameter("assignedDate"));
+			request.setAttribute("completionDate",request.getParameter("completionDate"));
+			request.getRequestDispatcher("UpdateTask.jsp").forward(request, response);
 		}
 		else {
 			chain.doFilter(request, response);
@@ -50,6 +54,7 @@ public class NewTaskBFilterARequired implements Filter{
 
 	public void destroy() {
 	
+		
 	}
 	
 }

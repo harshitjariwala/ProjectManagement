@@ -283,7 +283,8 @@
       <a href="Signup.jsp" class="btn btn-outline-light mb-2">➕ Add User</a>
       <a class="btn btn-outline-light mb-2">📋 List Users</a>
       <a href="AddProject.jsp" class="btn btn-outline-light mb-2">📁 Add Project</a>
-      <button class="btn btn-outline-light mb-2">📝 New Task</button>
+      <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
+      <a href="ListProjectController" class="btn btn-outline-light">📃 List All Projects</a>
       <button class="btn btn-outline-light mb-2">📊 Reports</button>
     </div>
     <div class="mt-auto">

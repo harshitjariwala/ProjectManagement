@@ -23,6 +23,7 @@
 
     .main-content {
       flex: 1;
+      padding: 30px 20px;	
     }
 
     body.light-theme {
@@ -260,7 +261,71 @@ body.light-theme .no-tasks-message {
 body.dark-theme .no-tasks-message {
   color: #adb5bd;
 }
+/* Light Theme */
+body.light-theme .main-content {
+  background-color: #ffffff;
+  color: #212529;
+}
 
+/* Dark Theme */
+body.dark-theme .main-content {
+  background-color: #1a1a1a;
+  color: #eaeaea;
+}
+
+/* Styling for links inside main-content */
+body.light-theme .main-content a {
+  color: #0d6efd;
+}
+
+body.dark-theme .main-content a {
+  color: #66b2ff;
+}
+
+body.light-theme .main-content a:hover,
+body.dark-theme .main-content a:hover {
+  text-decoration: underline;
+}
+
+ .main-content {
+  padding: 30px 20px;
+  margin-left: 0;
+  transition: margin-left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+}
+
+/* Light Theme */
+body.light-theme .main-content {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+/* Dark Theme */
+body.dark-theme .main-content {
+  background-color: #1a1a1a;
+  color: #eaeaea;
+}
+ /* Card styling */
+.card {
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+/* Dark Theme override */
+body.dark-theme .card {
+  background-color: #2c2c2c;
+  color: #eaeaea;
+  border: 1px solid #444;
+}
+ .main-content.shifted {
+  margin-left: 250px;
+  align-items: center;
+}
     
   </style>
 </head>
@@ -286,16 +351,16 @@ body.dark-theme .no-tasks-message {
 <div class="sidebar" id="taskManagerSidebar">
   <h5 class="mb-4">Task Manager</h5>
   <div>
-    <a class="btn btn-outline-light">🏠 Home</a>
+    <a href="AdminIndexController" class="btn btn-outline-light">🏠 Home</a>
     <a href="Signup.jsp" class="btn btn-outline-light">➕ Add User</a>
     <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
+    <a href="ListProjectController" class="btn btn-outline-light">📃 List All Projects</a>
     <button class="btn btn-outline-light">📊 Reports</button>
   </div>
   <div class="mt-auto">
-  <a href="LogoutController" class="btn btn-outline-light">🚪 Logout</a>
+    <button class="btn btn-outline-light">🚪 Logout</button>
   </div>
 </div>
 
@@ -303,70 +368,27 @@ body.dark-theme .no-tasks-message {
 
 <div class="page-wrapper">
   <div class="main-content" id="mainContent">
-    <h2>Projects & Tasks</h2>
-    <c:if test="${joinList.size() > 0}">
-    <c:forEach var="i" begin="0" end="${joinList.size() - 1}" step = "1">
-    <div class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="ListProjectController?projectId=${projectList[i].projectId}" class="project-title-link text-primary">📁 ${projectList[i].title}</a>
-        </h5>
-        
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover table-sm">
-            <thead class="table-primary">
-              <tr>
-                <th>Task ID</th>
-                <th>Task Detail</th>
-                <th>Assigned By</th>
-                <th>Assigned To</th>
-                <th>Remarks</th>
-                <th>Status</th>
-                <th>Assign Date</th>
-                <th>Completion Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            
-            <tbody>
-            <c:if test="${joinList[i].size() > 0}">
-            <c:forEach var="j" begin="0" end="${joinList[i].size() >2 ? 2:joinList[i].size() - 1}" step = "1">
-              <tr>
-                <td>${joinList[i][j].taskId}</td>
-                <td>${joinList[i][j].taskDetail}</td>
-                <td>${joinList[i][j].assignedByFirstName} ${joinList[i][j].assignedByLastName}</td>
-                <td>${joinList[i][j].assignedToFirstName} ${joinList[i][j].assignedToLastName}</td>
-                <td>${joinList[i][j].remarks}</td>
-                <td><span class="badge bg-warning text-dark">${joinList[i][j].status}</span></td>
-                <td>${joinList[i][j].assignedDate}</td>
-                <td>${joinList[i][j].completionDate}</td>
-                <td class="text-center">
-                  <a href="ViewTaskController?taskId=${joinList[i][j].taskId}" class="btn-action btn-view"><i class="bi bi-eye-fill"></i> View</a>
-                  <a href="UpdateTaskAController?taskId=${joinList[i][j].taskId}" class="btn-action btn-update"><i class="bi bi-pencil-square"></i> Update</a>
-                  <a href="DeleteTaskController?taskId=${joinList[i][j].taskId}" class="btn-action btn-delete"><i class="bi bi-trash-fill"></i> Delete</a>
-                </td>
-              </tr>
-              </c:forEach>
-              </c:if>
-            </tbody>
-          </table>
-        </div>
-        
-        <c:if test="${empty joinList[i]}">
-        <p class="no-tasks-message">No tasks available for this project.</p>
-        <a href="NewTaskAController" class="btn-new-task">📝 New Task</a>
-        </c:if>
-      </div>
-    </div> 
-    </c:forEach>
-    </c:if> 
-    <c:if test="${empty joinList}">
-    <div class="alert alert-info mt-4">
-      <h5>No active projects found.</h5>
-      <p>Please add a new project to start managing tasks.</p>
-      <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
-    </div>
-  </c:if>
+   
+   	<div class="card p-4 shadow-sm" style="max-width: 700px; width: 100%;">
+  <h5 class="mb-3 text-center">Task Details</h5>
+  <p><strong>Project Title:</strong> ${join.title}</p>
+  <p><strong>Task ID:</strong> ${join.taskId}</p>
+  <p><strong>Task Detail:</strong> ${join.taskDetail}</p>
+  <p><strong>Assigned By:</strong> ${join.assignedByFirstName} ${join.assignedByLastName}</p>
+  <p><strong>Assigned To:</strong> ${join.assignedToFirstName} ${join.assignedToLastName}</p>
+  <p><strong>Remarks:</strong> ${join.remarks}</p>
+  <p><strong>Status:</strong> ${join.status}</p>
+  <p><strong>Assigned Date:</strong> ${join.assignedDate}</p>
+  <p><strong>Completion Date:</strong> ${join.completionDate}</p>
+
+  <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+    <a href="ListAllTaskController" class="btn btn-outline-primary">📋 List All Tasks</a>
+    <a href="UpdateTaskAController?taskId=${join.taskId}" class="btn btn-outline-success">✏️ Update</a>
+    <a href="NewTaskAController" class="btn btn-outline-secondary">➕ Add Task</a>
+  </div>
+</div>
+
+
   </div>
 
   <footer>

@@ -222,6 +222,13 @@
      margin-left: 0;
    }
  }
+ 
+ .error-message {
+  color: #dc3545; /* Bootstrap's danger color */
+  font-size: 0.9rem;
+  margin-top: 4px;
+  display: block;
+}
   </style>
 </head>
 <body class="light-theme">
@@ -246,11 +253,12 @@
 <div class="sidebar" id="taskManagerSidebar">
   <h5 class="mb-4">Task Manager</h5>
   <div>
-    <a class="btn btn-outline-light">🏠 Home</a>
+    <a href="AdminIndexController" class="btn btn-outline-light">🏠 Home</a>
     <a href="Signup.jsp" class="btn btn-outline-light">➕ Add User</a>
     <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
+    <a href="ListProjectController" class="btn btn-outline-light">📃 List All Projects</a>
     <button class="btn btn-outline-light">📊 Reports</button>
   </div>
   <div class="mt-auto">
@@ -263,40 +271,52 @@
 <!-- Main Content -->
 <!-- With this updated block -->
 <div class="main-content" id="mainContent">
+<c:if test="${projectList.size() > 0}">
   <div class="container">
     <div class="form-wrapper">
       <form action="NewTaskBController" method="post">
         <label class="form-label">Choose Project:</label>
         <select name="projectId" class="form-select mb-3">
           <c:forEach var="project" items="${projectList}">
-            <option value="${project.projectId}">${project.title}</option>
+            <option value="${project.projectId}" ${projectId == project.projectId?"selected":""}>${project.title}</option>
           </c:forEach>
         </select>
 
+		<div class="mb3">
         <label class="form-label">Task Detail:</label>
-        <input type="text" name="taskDetail" class="form-control mb-3">
+        <input type="text" name="taskDetail" class="form-control">
+        <span class="error-message">${taskDetailError}</span>
+        </div>
 
         <label class="form-label">Assign By:</label>
         <select name="assignedBy" class="form-select mb-3">
           <c:forEach var="user" items="${userList}">
-            <option value="${user.userId}">${user.firstName} ${user.lastName}</option>
+            <option value="${user.userId}" ${userId == user.userId || assignedBy == user.userId?"selected":""}>${user.firstName} ${user.lastName}</option>
           </c:forEach>
         </select>
 
         <label class="form-label">Assign To:</label>
         <select name="assignedTo" class="form-select mb-3">
           <c:forEach var="user" items="${userList}">
-            <option value="${user.userId}">${user.firstName} ${user.lastName}</option>
+            <option value="${user.userId}" ${userId == user.userId || assignedTo == user.userId?"selected":""}>${user.firstName} ${user.lastName}</option>
           </c:forEach>
         </select>
 
         <label class="form-label">Remarks:</label>
-        <input type="text" name="remarks" class="form-control mb-3">
+        <input type="text" name="remarks" class="form-control mb-3" value="${remarks}">
 
         <button type="submit" class="btn btn-primary mt-2">Add Task</button>
       </form>
     </div>
   </div>
+  </c:if>
+  <c:if test="${empty projectList}">
+    <div class="alert alert-info mt-4">
+      <h5>No active projects found.</h5>
+      <p>Please add a new project to start managing tasks.</p>
+      <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
+    </div>
+  </c:if>
 </div>
 </div>
   <footer>
