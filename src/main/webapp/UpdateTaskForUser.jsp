@@ -333,7 +333,7 @@ body.dark-theme .card {
 
 <div class="main-header">
   <div class="d-flex align-items-center gap-3">
-    <button class="toggle-sidebar-btn" id="toggleSidebarBtn">&#9776;</button>
+ 
     <h4 class="m-0">Task Manager Dashboard</h4>
   </div>
   <div class="d-flex align-items-center gap-3">
@@ -345,47 +345,44 @@ body.dark-theme .card {
       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" width="32" height="32" />
       <span id="usernameDisplay">${user.firstName} ${user.lastName}</span>
     </div>
+    <a href="LogoutController" class="btn btn-sm btn-outline-light">
+      <i class="bi bi-box-arrow-right"></i> Logout
+	</a>
   </div>
 </div>
-
-<div class="sidebar" id="taskManagerSidebar">
-  <h5 class="mb-4">Task Manager</h5>
-  <div>
-    <a href="AdminIndexController" class="btn btn-outline-light">🏠 Home</a>
-    <a href="Signup.jsp" class="btn btn-outline-light">➕ Add User</a>
-    <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
-    <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
-    <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
-    <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
-  </div>
-  <div class="mt-auto">
-    <button class="btn btn-outline-light">🚪 Logout</button>
-  </div>
-</div>
-
-<div id="sidebarOverlay" class="sidebar-overlay"></div>
 
 <div class="page-wrapper">
   <div class="main-content" id="mainContent">
    
    	<div class="card p-4 shadow-sm" style="max-width: 700px; width: 100%;">
   <h5 class="mb-3 text-center">Task Details</h5>
+   <form action="UpdateTaskBControllerForUser" method="post">
   <p><strong>Project Title:</strong> ${join.title}</p>
   <p><strong>Task ID:</strong> ${join.taskId}</p>
+  <input type="hidden" name="taskId" value="${join.taskId}">
   <p><strong>Task Detail:</strong> ${join.taskDetail}</p>
   <p><strong>Assigned By:</strong> ${join.assignedByFirstName} ${join.assignedByLastName}</p>
   <p><strong>Assigned To:</strong> ${join.assignedToFirstName} ${join.assignedToLastName}</p>
   <p><strong>Remarks:</strong> ${join.remarks}</p>
-  <p><strong>Status:</strong> ${join.status}</p>
+  <strong>Status:</strong>
+  <select name="status" class="form-select mb-3">
+          
+     <option value="Initialized" ${join.status.equals("Initialized")?"selected":""}>Initialized</option>
+     <option value="In Progress" ${join.status.equals("In Progress")?"selected":""}>In Progress</option>
+     <option value="Pending" ${join.status.equals("Pending")?"selected":""}>Pending</option>
+     <option value="On Hold" ${join.status.equals("On Hold")?"selected":""}>On Hold</option>
+     <option value="Completed" ${join.status.equals("Completed")?"selected":""}>Completed</option>
+     <option value="Cancelled" ${join.status.equals("Cancelled")?"selected":""}>Cancelled</option>
+         
+       </select>
   <p><strong>Assigned Date:</strong> ${join.assignedDate}</p>
   <p><strong>Completion Date:</strong> ${join.completionDate}</p>
 
   <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
-    <a href="ListProjectController?projectId=${join.projectId}" class="btn btn-outline-primary">📋 List All Tasks</a>
-    <a href="UpdateTaskAController?taskId=${join.taskId}" class="btn btn-outline-success">✏️ Update</a>
-    <a href="NewTaskAController" class="btn btn-outline-secondary">➕ Add Task</a>
+    
+  <button type="submit" class="btn btn-outline-success" style="text-decoration: None">✏️ Update</button>
   </div>
+  </form>
 </div>
 
 

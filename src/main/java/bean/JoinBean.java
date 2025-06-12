@@ -2,6 +2,7 @@ package bean;
 
 public class JoinBean {
 	int taskId;
+	int projectId;
 	String taskDetail;
 	String assignedByFirstName;
 	String assignedByLastName;
@@ -18,6 +19,12 @@ public class JoinBean {
 	}
 	public void setTaskId(int taskId) {
 		this.taskId = taskId;
+	}
+	public int getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
 	}
 	public String getTaskDetail() {
 		return taskDetail;

@@ -2,7 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import bean.TaskBean;
 import oracle.jdbc.proxy.annotation.Pre;
@@ -53,5 +57,49 @@ public class TaskDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+public void updateTaskForUser(int taskId, TaskBean task) {
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("UPDATE PROJECT_MANAGEMENT_TASKS SET STATUS = ? WHERE TASK_ID = ?");
+			pstmt.setString(1,task.getStatus());
+			pstmt.setInt(2, taskId);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<TaskBean> getTaskByProjectId(int projectId) {
+		ArrayList<TaskBean> list = new ArrayList<TaskBean>();
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM PROJECT_MANAGEMENT_TASKS WHERE PROJECT_ID = ?");
+			pstmt.setInt(1, projectId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				TaskBean task = new TaskBean();
+				task.setTaskId(rs.getInt("TASK_ID"));
+				task.setProjectId(projectId);
+				task.setTaskDetail(rs.getString("TASK_DETAIL"));
+				task.setAssignedBy(rs.getInt("ASSIGNED_BY"));
+				task.setAssignedTo(rs.getInt("ASSIGNED_TO"));
+				task.setRemarks(rs.getString("REMARKS"));
+				task.setStatus(rs.getString("STATUS"));
+				task.setAssignedDate(rs.getString("ASSIGNED_DATE"));
+				task.setCompletionDate(rs.getString("COMPLETION_DATE"));
+				
+				list.add(task);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

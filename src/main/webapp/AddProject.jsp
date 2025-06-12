@@ -228,8 +228,8 @@
     <a href="ListUserController" class="btn btn-outline-light mb-2">📋 List Users</a>
     <a class="btn btn-outline-light mb-2">📁 Add Project</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a href="ListProjectController" class="btn btn-outline-light">📃 List All Projects</a>
-    <button class="btn btn-outline-light mb-2">📊 Reports</button>
+    <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
+    <a href="ReportController" class="btn btn-outline-light mb-2">📊 Reports</a>
   </div>
   <div class="mt-auto">
     <button class="btn btn-outline-light">🚪 Logout</button>

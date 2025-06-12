@@ -292,7 +292,7 @@ body.dark-theme .no-tasks-message {
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
     <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
-    <button class="btn btn-outline-light">📊 Reports</button>
+    <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
   </div>
   <div class="mt-auto">
   <a href="LogoutController" class="btn btn-outline-light">🚪 Logout</a>
@@ -308,9 +308,16 @@ body.dark-theme .no-tasks-message {
     <c:forEach var="i" begin="0" end="${joinList.size() - 1}" step = "1">
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
-        <h5 class="card-title">
-          <a href="ListProjectController?projectId=${projectList[i].projectId}" class="project-title-link text-primary">📁 ${projectList[i].title}</a>
-        </h5>
+        <h5 class="card-title d-flex justify-content-between align-items-center">
+  <span>
+    <a href="ListProjectController?projectId=${projectList[i].projectId}" class="project-title-link text-primary">📁 ${projectList[i].title}</a>
+  </span>
+  <span class="d-flex gap-2">
+    <a href="DeactivateProjectController?projectId=${projectList[i].projectId}" class="btn btn-sm btn-warning">🛑 Deactivate</a>
+    <a href="DeleteProjectController?projectId=${projectList[i].projectId}" class="btn btn-sm btn-danger">🗑️ Delete</a>
+  </span>
+</h5>
+
         
         <div class="table-responsive">
           <table class="table table-bordered table-hover table-sm">
@@ -337,7 +344,22 @@ body.dark-theme .no-tasks-message {
                 <td>${joinList[i][j].assignedByFirstName} ${joinList[i][j].assignedByLastName}</td>
                 <td>${joinList[i][j].assignedToFirstName} ${joinList[i][j].assignedToLastName}</td>
                 <td>${joinList[i][j].remarks}</td>
-                <td><span class="badge bg-warning text-dark">${joinList[i][j].status}</span></td>
+                <td>
+  <span class="badge 
+    <c:choose>
+      <c:when test="${joinList[i][j].status == 'Initialized'}">bg-primary</c:when>
+      <c:when test="${joinList[i][j].status == 'In Progress'}">bg-info text-dark</c:when>
+      <c:when test="${joinList[i][j].status == 'Pending'}">bg-warning text-dark</c:when>
+      <c:when test="${joinList[i][j].status == 'On Hold'}">bg-secondary</c:when>
+      <c:when test="${joinList[i][j].status == 'Completed'}">bg-success</c:when>
+      <c:when test="${joinList[i][j].status == 'Cancelled'}">bg-danger</c:when>
+      <c:otherwise>bg-light text-dark</c:otherwise>
+    </c:choose>
+  ">
+    ${joinList[i][j].status}
+  </span>
+</td>
+
                 <td>${joinList[i][j].assignedDate}</td>
                 <td>${joinList[i][j].completionDate}</td>
                 <td class="text-center">
@@ -403,5 +425,17 @@ body.dark-theme .no-tasks-message {
   toggleSidebarBtn.addEventListener('click', toggleSidebar);
   sidebarOverlay.addEventListener('click', toggleSidebar);
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<c:if test="${not empty ProjectDeleteError}">
+  <script>
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: '${ProjectDeleteError}'
+    });
+  </script>
+</c:if>
+
 </body>
 </html>

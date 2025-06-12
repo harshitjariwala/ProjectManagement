@@ -258,8 +258,8 @@
     <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a href="ListProjectController" class="btn btn-outline-light">📃 List All Projects</a>
-    <button class="btn btn-outline-light">📊 Reports</button>
+    <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
+    <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
   </div>
   <div class="mt-auto">
     <button class="btn btn-outline-light">🚪 Logout</button>

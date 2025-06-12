@@ -10,10 +10,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     html, body {
-      height: 100%;
-      margin: 0;
-    }
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  display: flex;
+  flex-direction: column;
+}
     body.light-theme {
       background-color: #f4f6fa;
       color: #212529;
@@ -32,6 +37,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
+      min-height:60px;
+      flex-shrink: 0;
     }
 
     .main-header h4 {
@@ -100,8 +107,10 @@
     }
 
     .page-wrapper {
+    
       display: flex;
       flex-direction: column;
+      flex: 1;
       min-height: 100vh;
     }
 
@@ -193,6 +202,110 @@
     body.light-theme .project-title-link:hover {
       text-decoration: underline;
     }
+    
+    .btn-action {
+      font-size: 14px;
+      padding: 4px 8px;
+    }
+
+    .btn-view {
+      color: #0d6efd;
+    }
+
+    .btn-update {
+      color: #198754;
+    }
+
+    .btn-delete {
+      color: #dc3545;
+    }
+    .no-tasks-message {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+/* Light Theme */
+body.light-theme .no-tasks-message {
+  color: #6c757d; /* Bootstrap's text-muted color */
+}
+
+/* Dark Theme */
+body.dark-theme .no-tasks-message {
+  color: #adb5bd;
+}
+
+footer {
+      padding: 10px 20px;
+      background-color: #243447;
+      color: white;
+      text-align: center;
+    }
+
+    body.light-theme footer {
+      background-color: #e9ecef;
+      color: #212529;
+    }
+    
+    .main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.btn-new-task {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+/* Light Theme */
+body.light-theme .btn-new-task {
+  background-color: #0d6efd;
+  color: #ffffff;
+  border-color: #0d6efd;
+}
+
+body.light-theme .btn-new-task:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  color: #ffffff;
+}
+
+/* Dark Theme */
+body.dark-theme .btn-new-task {
+  background-color: #1f6feb;
+  color: #ffffff;
+  border-color: #1f6feb;
+}
+
+body.dark-theme .btn-new-task:hover {
+  background-color: #1158c7;
+  border-color: #0e4bab;
+  color: #ffffff;
+}
+
+.no-tasks-message {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+/* Light Theme */
+body.light-theme .no-tasks-message {
+  color: #6c757d; /* Bootstrap's text-muted color */
+}
+
+/* Dark Theme */
+body.dark-theme .no-tasks-message {
+  color: #adb5bd;
+}
   </style>
 </head>
 <body class="light-theme">
@@ -219,9 +332,9 @@
     <a href="Signup.jsp" class="btn btn-outline-light">➕ Add User</a>
     <a href="ListUserController" class="btn btn-outline-light">📋 List Users</a>
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
-    <a class="btn btn-outline-light">📃 List All Projects</a>
+    <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a class="btn btn-outline-light">📊 Reports</a>
+    <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
   </div>
   <div class="mt-auto">
     <a href="LogoutController" class="btn btn-outline-light w-100">🚪 Logout</a>
@@ -231,28 +344,53 @@
 
 <div class="page-wrapper">
   <div class="main-content" id="mainContent">
-    <c:if test="${projectList.size() > 0}">
+    <c:if test="${list.size() > 0}">
       <div class="table-responsive">
         <table class="table table-bordered table-striped">
           <thead class="table-primary">
             <tr>
-              <th>Project ID</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Active</th>
+              <th>Task ID</th>
+              <th>Task Detail</th>
+              <th>Assigned By</th>
+              <th>Assigned To</th>
+              <th>Remarks</th>
+              <th>Status</th>
+              <th>Assign Date</th>
+              <th>Completion Date</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <c:forEach var="project" items="${projectList}">
+            <c:forEach var="task" items="${list}">
               <tr>
-                <td>${project.projectId}</td>
+                <td>${task.taskId}</td>
+                <td>${task.taskDetail}</td>
+                <td>${task.assignedByFirstName} ${task.assignedByLastName}</td>
+                <td>${task.assignedToFirstName} ${task.assignedToLastName}</td>
+                <td>${task.remarks}</td>
                 <td>
-                  <a href="ListProjectController?projectId=${project.projectId}" class="project-title-link">
-                    📁 ${project.title}
-                  </a>
+  <span class="badge 
+    <c:choose>
+      <c:when test="${task.status == 'Initialized'}">bg-primary</c:when>
+      <c:when test="${task.status == 'In Progress'}">bg-info text-dark</c:when>
+      <c:when test="${task.status == 'Pending'}">bg-warning text-dark</c:when>
+      <c:when test="${task.status == 'On Hold'}">bg-secondary</c:when>
+      <c:when test="${task.status == 'Completed'}">bg-success</c:when>
+      <c:when test="${task.status == 'Cancelled'}">bg-danger</c:when>
+      <c:otherwise>bg-light text-dark</c:otherwise>
+    </c:choose>
+  ">
+    ${task.status}
+  </span>
+</td>
+
+                <td>${task.assignedDate}</td>
+                <td>${task.completionDate}</td>
+                <td class="text-center">
+                  <a href="ViewTaskController?taskId=${task.taskId}" class="btn-action btn-view"><i class="bi bi-eye-fill"></i> View</a>
+                  <a href="UpdateTaskAController?taskId=${task.taskId}" class="btn-action btn-update"><i class="bi bi-pencil-square"></i> Update</a>
+                  <a href="DeleteTaskController?taskId=${task.taskId}" class="btn-action btn-delete"><i class="bi bi-trash-fill"></i> Delete</a>
                 </td>
-                <td>${project.description}</td>
-                <td>${project.active ? 'Yes' : 'No'}</td>
               </tr>
             </c:forEach>
           </tbody>
@@ -260,22 +398,12 @@
       </div>
     </c:if>
 
-    <c:if test="${empty projectList}">
-      <div class="alert alert-info mt-4">
-        <h5>No active projects found.</h5>
-        <p>Please add a new project to start managing tasks.</p>
-        <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
-      </div>
+    <c:if test="${empty list}">
+      <p class="no-tasks-message">No tasks available for this project.</p>
+        <a href="NewTaskAController" class="btn-new-task">📝 New Task</a>
     </c:if>
-
-    <c:if test="${projectList.size() > 0}">
-      <div class="text-center">
-        <a href="AddProject.jsp" class="btn btn-success btn-add-project">Add Project</a>
-      </div>
-    </c:if>
-  </div>
-
-  <footer>
+</div>
+<footer>
     &copy; 2025 Task Manager. All rights reserved.
   </footer>
 </div>

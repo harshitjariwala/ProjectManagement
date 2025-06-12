@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet{
 				response.sendRedirect("AdminIndexController");
 			}			
 			else {
-				response.sendRedirect("UserIndex.jsp");
+				response.sendRedirect("UserIndexController");
 			}
 		}
 	}
