@@ -209,6 +209,10 @@
       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" width="32" height="32">
       <span id="usernameDisplay">${user.firstName} ${user.lastName}</span>
     </div>
+    
+    <a href="LogoutController" class="btn btn-sm btn-outline-light">
+      <i class="bi bi-box-arrow-right"></i> Logout
+	</a>
   </div>
 </div>
 
@@ -223,9 +227,6 @@
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
     <a class="btn btn-outline-light">📊 Reports</a>
   </div>
-  <div class="mt-auto">
-    <a href="LogoutController" class="btn btn-outline-light w-100">🚪 Logout</a>
-  </div>
 </div>
 <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
@@ -239,7 +240,9 @@
               <th>Project ID</th>
               <th>Title</th>
               <th>Description</th>
+              <th>Number of Tasks</th>
               <th>Active</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -252,7 +255,22 @@
                   </a>
                 </td>
                 <td>${project.description}</td>
+                <td>${project.noOfTasks}</td>
                 <td>${project.active ? 'Yes' : 'No'}</td>
+                <td>
+    <!-- If project is active, show Deactivate + Delete -->
+    <c:if test="${project.active}">
+      <a href="DeactivateProjectController?projectId=${project.projectId}" class="btn btn-warning btn-sm me-1">Deactivate</a>
+      <a href="DeleteProjectController?projectId=${project.projectId}" class="btn btn-danger btn-sm">Delete</a>
+    </c:if>
+
+    <!-- If project is NOT active, show Activate + Delete -->
+    <c:if test="${project.active == false}">
+      <a href="ActivateProjectController?projectId=${project.projectId}" class="btn btn-success btn-sm me-1">Activate</a>
+      <a href="DeleteProjectController?projectId=${project.projectId}" class="btn btn-danger btn-sm">Delete</a>
+    </c:if>
+</td>
+                
               </tr>
             </c:forEach>
           </tbody>

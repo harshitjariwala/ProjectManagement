@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Task Manager Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
   html, body {
   height: 100%;
@@ -271,6 +272,9 @@
       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" width="32" height="32" />
       <span id="usernameDisplay">${user.firstName} ${user.lastName}</span>
     </div>
+    <a href="LogoutController" class="btn btn-sm btn-outline-light">
+      <i class="bi bi-box-arrow-right"></i> Logout
+	</a>
   </div>
 </div>
 
@@ -287,9 +291,7 @@
       <a href="ListAllProjectsController" class="btn btn-outline-light">📃 List All Projects</a>
       <a href="ReportController" class="btn btn-outline-light mb-2">📊 Reports</a>
     </div>
-    <div class="mt-auto">
-      <button class="btn btn-outline-light">🚪 Logout</button>
-    </div>
+
   </div>
 
   <!-- Sidebar Overlay -->

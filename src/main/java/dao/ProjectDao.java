@@ -49,7 +49,7 @@ public class ProjectDao {
 		
 		try {
 			Connection conn = DBConnection.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM PROJECT_MANAGEMENT_PROJECTS");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT PROJECT_ID, TITLE, DESCRIPTION, (SELECT COUNT(*) FROM PROJECT_MANAGEMENT_TASKS PMT WHERE PMT.PROJECT_ID = PMP.PROJECT_ID) CNT_TASKS, ACTIVE FROM PROJECT_MANAGEMENT_PROJECTS PMP");
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -57,6 +57,7 @@ public class ProjectDao {
 				project.setProjectId(rs.getInt("PROJECT_ID"));
 				project.setTitle(rs.getString("TITLE"));
 				project.setDescription(rs.getString("DESCRIPTION"));
+				project.setNoOfTasks(rs.getInt("CNT_TASKS"));
 				project.setActive(rs.getString("ACTIVE"));
 				
 				list.add(project);
@@ -85,6 +86,17 @@ public class ProjectDao {
 			pstmt.setInt(1, projectId);
 			pstmt.executeUpdate();
 		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void activateProject(int projectId) {
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("UPDATE PROJECT_MANAGEMENT_PROJECTS SET ACTIVE = 'True' WHERE PROJECT_ID = ?");
+			pstmt.setInt(1, projectId);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

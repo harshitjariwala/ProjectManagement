@@ -4,6 +4,7 @@ public class ProjectBean {
 	int projectId;
 	String title;
 	String description;
+	int noOfTasks;
 	String active;
 	
 	public int getProjectId() {
@@ -23,6 +24,12 @@ public class ProjectBean {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public int getNoOfTasks() {
+		return noOfTasks;
+	}
+	public void setNoOfTasks(int noOfTasks) {
+		this.noOfTasks = noOfTasks;
 	}
 	public String getActive() {
 		return active;

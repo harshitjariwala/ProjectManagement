@@ -322,6 +322,9 @@ body.dark-theme .no-tasks-message {
       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" width="32" height="32">
       <span id="usernameDisplay">${user.firstName} ${user.lastName}</span>
     </div>
+    <a href="LogoutController" class="btn btn-sm btn-outline-light">
+      <i class="bi bi-box-arrow-right"></i> Logout
+	</a>
   </div>
 </div>
 
@@ -336,9 +339,7 @@ body.dark-theme .no-tasks-message {
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
     <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
   </div>
-  <div class="mt-auto">
-    <a href="LogoutController" class="btn btn-outline-light w-100">🚪 Logout</a>
-  </div>
+  
 </div>
 <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
