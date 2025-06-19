@@ -99,8 +99,14 @@ public class JoinDao {
 					+ "JOIN PROJECT_MANAGEMENT_PROJECTS PR ON TS.PROJECT_ID = PR.PROJECT_ID "
 					+ "WHERE TS.PROJECT_ID = ? AND (CONCAT(ASB.FIRST_NAME, ASB.LAST_NAME) = ? OR CONCAT(AST.FIRST_NAME, AST.LAST_NAME) = ?) ORDER BY TASK_ID");
 			pstmt.setInt(1, projectId);
-			pstmt.setString(2, user.getFirstName().concat(user.getLastName()));
-			pstmt.setString(3, user.getFirstName().concat(user.getLastName()));
+			if(user.getLastName() != null) {
+				pstmt.setString(2, user.getFirstName().concat(user.getLastName()));
+				pstmt.setString(3, user.getFirstName().concat(user.getLastName()));
+			}
+			else {
+				pstmt.setString(2, user.getFirstName());
+				pstmt.setString(3, user.getFirstName());
+			}
 			
 			ResultSet rs = pstmt.executeQuery();
 			

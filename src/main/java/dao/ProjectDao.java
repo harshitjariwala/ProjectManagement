@@ -8,6 +8,26 @@ import bean.ProjectBean;
 import util.DBConnection;
 
 public class ProjectDao {
+	public ProjectBean getprojectInfo(int projectId) {
+		ProjectBean project = new ProjectBean();
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM PROJECT_MANAGEMENT_PROJECTS WHERE PROJECT_ID = ?");
+			pstmt.setInt(1, projectId);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				project.setProjectId(rs.getInt("PROJECT_ID"));
+				project.setTitle(rs.getString("TITLE"));
+				project.setDescription(rs.getString("DESCRIPTION"));
+				project.setActive(rs.getString("ACTIVE"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return project;
+	}
 	public void insertProject(ProjectBean project) {
 		try {
 			Connection conn = DBConnection.getConnection();
@@ -95,6 +115,18 @@ public class ProjectDao {
 			Connection conn = DBConnection.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("UPDATE PROJECT_MANAGEMENT_PROJECTS SET ACTIVE = 'True' WHERE PROJECT_ID = ?");
 			pstmt.setInt(1, projectId);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateDescription(int projectId, String description) {
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("UPDATE PROJECT_MANAGEMENT_PROJECTS SET DESCRIPTION = ? WHERE PROJECT_ID = ?");
+			pstmt.setString(1, description);
+			pstmt.setInt(2, projectId);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

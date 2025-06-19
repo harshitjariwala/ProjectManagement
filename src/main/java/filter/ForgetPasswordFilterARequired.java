@@ -1,35 +1,42 @@
 package filter;
 
 import java.io.IOException;
+import javax.servlet.*;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
+/**
+ * Filter to validate that email is provided for forget password functionality.
+ */
 @WebFilter("/ForgetPasswordController")
-public class ForgetPasswordFilterARequired implements Filter{
+public class ForgetPasswordFilterARequired implements Filter {
 
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // No initialization needed
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		String email = request.getParameter("email");
-		
-		if(email == null || email.isBlank()) {
-			request.setAttribute("emailError", "Email Id is Required");
-			request.getRequestDispatcher("Login.jsp").forward(request, response);
-		}
-		else {
-			chain.doFilter(request, response);
-		}
-	}
+    /**
+     * Checks if 'email' parameter is present and not blank. If missing, sets an error
+     * message and forwards back to the login page.
+     */
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-	public void destroy() {
-		
-	}	
+        String email = request.getParameter("email");
+
+        if (email == null || email.trim().isEmpty()) {
+            request.setAttribute("emailError", "Email ID is required.");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+        } else {
+            // Input is valid, continue processing
+            chain.doFilter(request, response);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        // No resource cleanup required
+    }
 }

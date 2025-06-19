@@ -224,10 +224,6 @@
       color: #198754;
     }
 
-    .btn-delete {
-      color: #dc3545;
-    }
-
     .btn-action:hover {
       text-decoration: underline;
       cursor: pointer;
@@ -353,7 +349,33 @@ body.dark-theme .no-tasks-message {
   align-items: center;
   gap: 15px;
 }
-    
+    .project-description-box {
+  
+  padding: 12px 15px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+body.dark-theme .project-description-box {
+  background-color: rgba(18, 18, 18);
+  color: #e0e0e0;
+}
+
+.project-description-box p {
+  margin: 0;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+body.dark-theme .card-title{
+	color: #e0e0e0;
+}
   </style>
 </head>
 <body class="light-theme">
@@ -390,6 +412,11 @@ body.dark-theme .no-tasks-message {
         <h5 class="card-title">
           📁 ${projectList[i].title}
         </h5>
+        
+        <div class="project-description-box mt-2">
+  <p class="mb-2">${projectList[i].description}</p>
+  
+</div>
         
         <div class="table-responsive">
           <table class="table table-bordered table-hover table-sm">
