@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.naming.spi.DirStateFactory.Result;
 
 import bean.ProjectBean;
+import bean.StatusBean;
 import bean.TaskBean;
 import oracle.jdbc.proxy.annotation.Pre;
 import util.DBConnection;
@@ -104,15 +105,24 @@ public void updateTaskForUser(int taskId, TaskBean task) {
 		return list;
 	}
 	
-	public ArrayList<Integer> countTask() {
-			ArrayList<Integer> list = new ArrayList<Integer>();
-				
-			try {
-				Connection conn = DBConnection.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM PROJECT_MANAGEMENT_PROJECTS GROUP BY PROJECT_ID");
-			} catch (Exception e) {
-				e.printStackTrace();
+	public ArrayList<StatusBean> countTaskByStatus(){
+		ArrayList<StatusBean> list = new ArrayList<StatusBean>();
+		
+		try {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT STATUS, COUNT(*) CNT_TASK FROM PROJECT_MANAGEMENT_TASKS GROUP BY STATUS");
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				StatusBean status = new StatusBean();
+				status.setStatus(rs.getString("STATUS"));
+				status.setNoOfTasks(rs.getInt("CNT_TASK"));
+				list.add(status);
 			}
-			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

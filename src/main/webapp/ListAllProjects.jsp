@@ -225,7 +225,7 @@
     <a href="AddProject.jsp" class="btn btn-outline-light">📁 Add Project</a>
     <a class="btn btn-outline-light">📃 List All Projects</a>
     <a href="NewTaskAController" class="btn btn-outline-light">📝 New Task</a>
-    <a class="btn btn-outline-light">📊 Reports</a>
+    <a href="ReportController" class="btn btn-outline-light">📊 Reports</a>
   </div>
 </div>
 <div id="sidebarOverlay" class="sidebar-overlay"></div>

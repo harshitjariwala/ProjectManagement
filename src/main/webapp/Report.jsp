@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,7 @@
     }
 
     .main-header {
+      position: relative;
       height: 60px;
       background-color: #243447;
       color: white;
@@ -123,15 +125,14 @@
       color: white;
     }
 
-    body.dark-theme .main-header,
-    body.dark-theme .sidebar,
-    body.dark-theme footer {
-      background-color: #1f1f1f;
+    body.dark-theme .sidebar {
+      background-color: #243447;
       color: white;
     }
 
     body.dark-theme .chart-card {
       background-color: #1e1e1e;
+      color: white;
     }
 
     .toggle-sidebar-btn {
@@ -187,7 +188,10 @@
     <div class="main-header">
       <div class="d-flex align-items-center gap-3">
         <button class="toggle-sidebar-btn" id="toggleSidebarBtn">&#9776;</button>
-        <h4 class="m-0 flex-grow-1 text-center">Task Manager Dashboard</h4>
+          <div class="position-absolute top-50 start-50 translate-middle">
+    <h4 class="m-0">Task Manager Dashboard</h4>
+  </div>
+   
       </div>
       <div class="d-flex align-items-center gap-3">
         <div class="form-check form-switch text-light m-0">
@@ -219,6 +223,7 @@
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
+    <c:if test="${projectList.size() > 0}">
       <div class="chart-card">
         <h5>📊 Tasks per Project</h5>
         <canvas id="barChart"></canvas>
@@ -228,6 +233,14 @@
         <h5>📈 Task Status Distribution</h5>
         <canvas id="doughnutChart"></canvas>
       </div>
+          </c:if>
+      <c:if test="${empty projectList}">
+      <div class="alert alert-info mt-4">
+        <h5>No active projects found.</h5>
+        <p>Please add a new project to start managing tasks.</p>
+        <a href="AddProject.jsp" class="btn btn-primary mt-2">➕ Add Project</a>
+      </div>
+    </c:if>
     </div>
 
     <!-- Footer -->
@@ -275,10 +288,10 @@
     new Chart(document.getElementById("barChart"), {
       type: 'bar',
       data: {
-        labels: ['Project A', 'Project B', 'Project C'],
+        labels: [<c:forEach var="project" items="${projectList}">'${project.title}',</c:forEach>],
         datasets: [{
           label: 'Tasks',
-          data: [12, 19, 7],
+          data: [<c:forEach var="project" items="${projectList}">${project.noOfTasks},</c:forEach>],
           backgroundColor: ['#0d6efd', '#198754', '#ffc107']
         }]
       },
@@ -296,10 +309,10 @@
     new Chart(document.getElementById("doughnutChart"), {
       type: 'doughnut',
       data: {
-        labels: ['Completed', 'In Progress', 'Pending'],
+        labels: [<c:forEach var="task" items="${taskList}">'${task.status}',</c:forEach>],
         datasets: [{
-          data: [10, 5, 3],
-          backgroundColor: ['#198754', '#0dcaf0', '#ffc107']
+          data: [<c:forEach var="task" items="${taskList}">${task.noOfTasks},</c:forEach>],
+          backgroundColor: ['#198754', '#0dcaf0', '#ffc107','#FF729F','#53131E','#E55934']
         }]
       },
       options: {
